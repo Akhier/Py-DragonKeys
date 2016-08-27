@@ -21,7 +21,7 @@ class KeyHandler:
             self.bindingdict = outputdict
             self.bindingpath = csvpath
             temp = csvpath.lower().split('.')
-            self.bindingname = temp[temp.index('csv') - 1]
+            self.bindingname = csvpath.split('.')[temp.index('csv') - 1]
 
 
 if __name__ == '__main__':
@@ -51,13 +51,13 @@ if __name__ == '__main__':
         con.flush
     teststr = 'asdf.zxcv.test.csv'
     temp = teststr.lower().split('.')
-    print(temp[temp.index('csv') - 1])
+    print(teststr.split('.')[temp.index('csv') - 1])
     teststr = 'test.csv'
     temp = teststr.lower().split('.')
-    print(temp[temp.index('csv') - 1])
+    print(teststr.split('.')[temp.index('csv') - 1])
     teststr = 'asdf.zxcv.test.CSV'
     temp = teststr.lower().split('.')
-    print(temp[temp.index('csv') - 1])
+    print(teststr.split('.')[temp.index('csv') - 1])
     teststr = 'TEST.CSV'
     temp = teststr.lower().split('.')
-    print(temp[temp.index('csv') - 1])
+    print(teststr.split('.')[temp.index('csv') - 1])
