@@ -20,6 +20,7 @@ class KeyHandler:
                     outputdict[entry[0]] = entry[1]
             self.bindingdict = outputdict
             self.bindingpath = csvpath
+            csvpath = csvpath.replace('/', '.').replace('\\', '.')
             temp = csvpath.lower().split('.')
             self.bindingname = csvpath.split('.')[temp.index('csv') - 1]
 
@@ -49,15 +50,19 @@ if __name__ == '__main__':
             break
         pan.blit()
         con.flush
-    teststr = 'asdf.zxcv.test.csv'
+    teststr = 'asdf/zxcv/test.csv'
+    teststr = teststr.replace('/', '.').replace('\\', '.')
     temp = teststr.lower().split('.')
     print(teststr.split('.')[temp.index('csv') - 1])
     teststr = 'test.csv'
+    teststr = teststr.replace('/', '.').replace('\\', '.')
     temp = teststr.lower().split('.')
     print(teststr.split('.')[temp.index('csv') - 1])
-    teststr = 'asdf.zxcv.test.CSV'
+    teststr = 'asdf/zxcv/Test.CSV'
+    teststr = teststr.replace('/', '.').replace('\\', '.')
     temp = teststr.lower().split('.')
     print(teststr.split('.')[temp.index('csv') - 1])
     teststr = 'TEST.CSV'
+    teststr = teststr.replace('/', '.').replace('\\', '.')
     temp = teststr.lower().split('.')
     print(teststr.split('.')[temp.index('csv') - 1])
