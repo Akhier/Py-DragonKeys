@@ -5,14 +5,15 @@ import csv
 
 class KeyHandler:
     def __init__(self):
-        self.bindingname = ''
-        self.bindingpath = ''
-        self.bindingdict = {}
+        self._bindingname = ''
+        self._bindingpath = ''
+        self._bindingdict = {}
+        self._active = False
 
     def clear(self):
-        self.bindingname = ''
-        self.bindingpath = ''
-        self.bindingdict = {}
+        self._bindingname = ''
+        self._bindingpath = ''
+        self._bindingdict = {}
 
     def load(self, csvpath):
         if not os.path.isfile(csvpath):
@@ -24,28 +25,31 @@ class KeyHandler:
                 reader = csv.reader(file)
                 for entry in reader:
                     outputdict[entry[0]] = entry[1]
-            self.bindingdict = outputdict
-            self.bindingpath = csvpath
+            self._bindingdict = outputdict
+            self._bindingpath = csvpath
             csvpath = csvpath.replace('/', '.').replace('\\', '.')
             temp = csvpath.lower().split('.')
-            self.bindingname = csvpath.split('.')[temp.index('csv') - 1]
+            self._bindingname = csvpath.split('.')[temp.index('csv') - 1]
+            self._active = True
 
     def save_as(self, name):
-        path = name + '.csv'
-        with open(path, 'w', newline='') as file:
-            writer = csv.writer(file)
-            for binding, output in self.bindingdict.iteritems():
-                writer.writerow(binding, output)
-            self.bindingname = name
-            self.bindingpath = path
+        if self._active:
+            path = name + '.csv'
+            with open(path, 'w', newline='') as file:
+                writer = csv.writer(file)
+                for binding, output in self._bindingdict.iteritems():
+                    writer.writerow(binding, output)
+                self._bindingname = name
+                self._bindingpath = path
 
     def save(self):
-        self.save_as(self.bindingname)
+        self.save_as(self._bindingname)
 
     def new(self, name, defaultouptut):
         self.clear()
-        self.bindingdict['DEFAULT'] = defaultouptut
+        self._bindingdict['DEFAULT'] = defaultouptut
         self.save_as(name)
+        self._active = True
 
 
 if __name__ == '__main__':
