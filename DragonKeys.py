@@ -10,7 +10,11 @@ class KeyHandler:
         self._bindingdict = {}
         self._active = False
 
-    def clear(self):
+    @property
+    def active_bindings(self):
+        return self._bindingname
+
+    def _clear(self):
         self._bindingname = ''
         self._bindingpath = ''
         self._bindingdict = {}
@@ -19,7 +23,7 @@ class KeyHandler:
         if not os.path.isfile(csvpath):
             return False
         else:
-            self.clear()
+            self._clear()
             outputdict = {}
             with open(csvpath) as file:
                 reader = csv.reader(file)
@@ -46,7 +50,7 @@ class KeyHandler:
         self.save_as(self._bindingname)
 
     def new(self, name, defaultouptut):
-        self.clear()
+        self._clear()
         self._bindingdict['DEFAULT'] = defaultouptut
         self.save_as(name)
         self._active = True
