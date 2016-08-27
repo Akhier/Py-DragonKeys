@@ -1,4 +1,27 @@
 import libtcodpy
+import os.path
+import csv
+
+
+class KeyHandler:
+    def __init__(self):
+        self.bindingname = ''
+        self.bindingpath = ''
+        self.bindingdict = {}
+
+    def load_keybindings(self, csvpath):
+        if not os.path.isfile(csvpath):
+            return False
+        else:
+            outputdict = {}
+            with open(csvpath) as file:
+                reader = csv.reader(file)
+                for entry in reader:
+                    outputdict[entry[0]] = entry[1]
+            self.bindingdict = outputdict
+            self.bindingpath = csvpath
+            temp = csvpath.lower().split('.')
+            self.bindingname = temp[temp.index('csv') - 1]
 
 
 if __name__ == '__main__':
@@ -26,3 +49,15 @@ if __name__ == '__main__':
             break
         pan.blit()
         con.flush
+    teststr = 'asdf.zxcv.test.csv'
+    temp = teststr.lower().split('.')
+    print(temp[temp.index('csv') - 1])
+    teststr = 'test.csv'
+    temp = teststr.lower().split('.')
+    print(temp[temp.index('csv') - 1])
+    teststr = 'asdf.zxcv.test.CSV'
+    temp = teststr.lower().split('.')
+    print(temp[temp.index('csv') - 1])
+    teststr = 'TEST.CSV'
+    temp = teststr.lower().split('.')
+    print(temp[temp.index('csv') - 1])
