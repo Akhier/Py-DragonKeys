@@ -9,10 +9,16 @@ class KeyHandler:
         self.bindingpath = ''
         self.bindingdict = {}
 
-    def load_keybindings(self, csvpath):
+    def clear(self):
+        self.bindingname = ''
+        self.bindingpath = ''
+        self.bindingdict = {}
+
+    def load(self, csvpath):
         if not os.path.isfile(csvpath):
             return False
         else:
+            self.clear()
             outputdict = {}
             with open(csvpath) as file:
                 reader = csv.reader(file)
@@ -23,6 +29,23 @@ class KeyHandler:
             csvpath = csvpath.replace('/', '.').replace('\\', '.')
             temp = csvpath.lower().split('.')
             self.bindingname = csvpath.split('.')[temp.index('csv') - 1]
+
+    def save_as(self, name):
+        path = name + '.csv'
+        with open(path, 'w', newline='') as file:
+            writer = csv.writer(file)
+            for binding, output in self.bindingdict.iteritems():
+                writer.writerow(binding, output)
+            self.bindingname = name
+            self.bindingpath = path
+
+    def save(self):
+        self.save_as(self.bindingname)
+
+    def new(self, name, defaultouptut):
+        self.clear()
+        self.bindingdict['DEFAULT'] = defaultouptut
+        self.save_as(name)
 
 
 if __name__ == '__main__':
