@@ -55,6 +55,39 @@ class KeyHandler:
         self.save_as(name)
         self._active = True
 
+    def check_keypress(self):
+        key = libtcodpy.console_check_for_keypress(True)
+        if key.vk == libtcodpy.KEY_NONE:
+            return self._bindingdict['DEFAULT']
+        else:
+            if key.vk == libtcodpy.KEY_CHAR:
+                keychar = chr(key.c)
+                if keychar in self._bindingdict:
+                    return self._bindingdict[keychar]
+                else:
+                    return self._bindingdict['DEFAULT']
+            else:
+                keystr = str(key.vk)
+                if keystr in self._bindingdict:
+                    return self._bindingdict[keystr]
+                else:
+                    return self._bindingdict['DEFAULT']
+
+    def wait_keypress(self):
+        key = libtcodpy.console_wait_for_keypress(True)
+        if key.vk == libtcodpy.KEY_CHAR:
+            keychar = chr(key.c)
+            if keychar in self._bindingdict:
+                return self._bindingdict[keychar]
+            else:
+                return self._bindingdict['DEFAULT']
+        else:
+            keystr = str(key.vk)
+            if keystr in self._bindingdict:
+                return self._bindingdict[keystr]
+            else:
+                return self._bindingdict['DEFAULT']
+
 
 if __name__ == '__main__':
     from Panel import Panel
