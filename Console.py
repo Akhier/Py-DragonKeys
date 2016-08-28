@@ -66,4 +66,4 @@ class Console:
         libtcodpy.console_print_rect_ex(0, x, y, w, h, flag, align, txt)
 
     def rect(self, x, y, w, h, clear, flag=libtcodpy.BKGND_DEFAULT):
-        libtcodpy.console_rect(0, x, y, w, h, clear, flag)
+        libtcodpy.console_print_frame(0, x, y, w, h, clear, flag)

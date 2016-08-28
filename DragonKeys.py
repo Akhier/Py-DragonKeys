@@ -118,17 +118,38 @@ if __name__ == '__main__':
     from Console import Console
     testbinding = KeyHandler()
     testbinding.load('test.csv')
-    SCREEN_WIDTH = 40
-    SCREEN_HEIGHT = 25
+    SCREEN_WIDTH = 80
+    SCREEN_HEIGHT = 50
+    TEXT_WIDTH = SCREEN_WIDTH - 1
+    TEXT_HEIGHT = SCREEN_HEIGHT - 6
     con = Console(SCREEN_WIDTH, SCREEN_HEIGHT, 'test')
-    pan = Panel(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
-    testkey = getattr(libtcodpy, 'KEY_UP')
-    print(testkey)
-    if testkey == libtcodpy.KEY_UP:
-        print('true')
+    filepanel = Panel(0, 0, SCREEN_WIDTH, 3)
+    textpanel = Panel(0, 3, TEXT_WIDTH, TEXT_HEIGHT)
+    buttonpanel = Panel(0, SCREEN_HEIGHT - 3, SCREEN_WIDTH, 3)
+    scrollpanel = Panel(SCREEN_WIDTH - 1, 3, 1, SCREEN_HEIGHT - 4)
     while not con.is_window_closed:
         con.clear
-        pan.clear
-        pan.write(0, 0, testbinding.wait_keypress())
-        pan.blit()
+        filepanel.clear
+        textpanel.clear
+        buttonpanel.clear
+        scrollpanel.clear
+        filepanel.rect(0, 0, SCREEN_WIDTH, 3, False)
+        filepanel.write(1, 1, 'New')
+        textpanel.rect(0, 0, TEXT_WIDTH, TEXT_HEIGHT, False)
+        addbtntxt = 'Add Binding'
+        btntxtx = 1
+        buttonpanel.rect(0, 0, len(addbtntxt) + 2, 3, False)
+        buttonpanel.write(btntxtx, 1, addbtntxt)
+        btntxtx = btntxtx + len(addbtntxt) + 1
+        rmvbtntxt = 'Remove Binding'
+        buttonpanel.rect(btntxtx, 0, len(rmvbtntxt) + 2, 3, False)
+        btntxtx = btntxtx + 1
+        buttonpanel.write(btntxtx, 1, rmvbtntxt)
+        scrollpanel.write(0, 0, '^')
+        scrollpanel.write(0, TEXT_HEIGHT - 1, 'v')
+        filepanel.blit()
+        textpanel.blit()
+        buttonpanel.blit()
+        scrollpanel.blit()
         con.flush
+        testbinding.wait_keypress()

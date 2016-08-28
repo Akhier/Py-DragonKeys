@@ -67,4 +67,4 @@ class Panel:
                                         flag, align, txt)
 
     def rect(self, x, y, w, h, clear, flag=libtcodpy.BKGND_DEFAULT):
-        libtcodpy.console_rect(self._panel, x, y, w, h, clear, flag)
+        libtcodpy.console_print_frame(self._panel, x, y, w, h, clear, flag)
