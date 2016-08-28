@@ -92,6 +92,8 @@ class KeyHandler:
 if __name__ == '__main__':
     from Panel import Panel
     from Console import Console
+    testbinding = KeyHandler()
+    testbinding.load('test.csv')
     SCREEN_WIDTH = 40
     SCREEN_HEIGHT = 25
     con = Console(SCREEN_WIDTH, SCREEN_HEIGHT, 'test')
@@ -102,31 +104,7 @@ if __name__ == '__main__':
         print('true')
     while not con.is_window_closed:
         con.clear
-        key = libtcodpy.console_check_for_keypress(True)
-        if key.vk != libtcodpy.KEY_NONE:
-            if key.vk != libtcodpy.KEY_CHAR:
-                pan.clear
-                pan.write(0, 0, str(key.vk))
-            else:
-                pan.clear
-                pan.write(0, 0, chr(key.c))
-        if key.vk == libtcodpy.KEY_ESCAPE:
-            break
+        pan.clear
+        pan.write(0, 0, testbinding.wait_keypress())
         pan.blit()
         con.flush
-    teststr = 'asdf/zxcv/test.csv'
-    teststr = teststr.replace('/', '.').replace('\\', '.')
-    temp = teststr.lower().split('.')
-    print(teststr.split('.')[temp.index('csv') - 1])
-    teststr = 'test.csv'
-    teststr = teststr.replace('/', '.').replace('\\', '.')
-    temp = teststr.lower().split('.')
-    print(teststr.split('.')[temp.index('csv') - 1])
-    teststr = 'asdf/zxcv/Test.CSV'
-    teststr = teststr.replace('/', '.').replace('\\', '.')
-    temp = teststr.lower().split('.')
-    print(teststr.split('.')[temp.index('csv') - 1])
-    teststr = 'TEST.CSV'
-    teststr = teststr.replace('/', '.').replace('\\', '.')
-    temp = teststr.lower().split('.')
-    print(teststr.split('.')[temp.index('csv') - 1])
