@@ -41,8 +41,8 @@ class KeyHandler:
             path = name + '.csv'
             with open(path, 'w', newline='') as file:
                 writer = csv.writer(file)
-                for binding, output in self._bindingdict.iteritems():
-                    writer.writerow(binding, output)
+                for key, output in self._bindingdict.iteritems():
+                    writer.writerow(key, output)
                 self._bindingname = name
                 self._bindingpath = path
 
@@ -87,6 +87,30 @@ class KeyHandler:
                 return self._bindingdict[keystr]
             else:
                 return self._bindingdict['DEFAULT']
+
+    def add_specified_binding(self, key, output):
+        self._bindingdict[key] = output
+
+    def add_binding(self, output):
+        key = libtcodpy.console_wait_for_keypress(True)
+        if key.vk == libtcodpy.KEY_CHAR:
+            keychar = chr(key.c)
+            self.add_specified_binding(keychar, output)
+        else:
+            keystr = str(key.vk)
+            self.add_specified_binding(keystr, output)
+
+    def remove_specified_binding(self, key):
+        self._bindingdict.pop(key, None)
+
+    def remove_binding(self):
+        key = libtcodpy.console_wait_for_keypress(True)
+        if key.vk == libtcodpy.KEY_CHAR:
+            keychar = chr(key.c)
+            self.remove_specified_binding(keychar)
+        else:
+            keystr = str(key.vk)
+            self.remove_specified_binding(keystr)
 
 
 if __name__ == '__main__':
