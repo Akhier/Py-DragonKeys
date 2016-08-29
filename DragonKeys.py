@@ -14,6 +14,10 @@ class KeyHandler:
     def active_bindings(self):
         return self._bindingname
 
+    @property
+    def active(self):
+        return self._active
+
     def _clear(self):
         self._bindingname = ''
         self._bindingpath = ''
@@ -116,8 +120,8 @@ class KeyHandler:
 if __name__ == '__main__':
     from Panel import Panel
     from Console import Console
-    testbinding = KeyHandler()
-    testbinding.load('test.csv')
+    binding = KeyHandler()
+    binding.load('test.csv')
     SCREEN_WIDTH = 80
     SCREEN_HEIGHT = 50
     TEXT_WIDTH = SCREEN_WIDTH - 1
@@ -125,16 +129,29 @@ if __name__ == '__main__':
     con = Console(SCREEN_WIDTH, SCREEN_HEIGHT, 'test')
     filepanel = Panel(0, 0, SCREEN_WIDTH, 3)
     textpanel = Panel(0, 3, TEXT_WIDTH, TEXT_HEIGHT)
+    workpanel = Panel(1, 1, TEXT_WIDTH - 2, TEXT_HEIGHT - 2)
+    bindingspanel = Panel(0, 0, TEXT_WIDTH - 2, 1)
     buttonpanel = Panel(0, SCREEN_HEIGHT - 3, SCREEN_WIDTH, 3)
-    scrollpanel = Panel(SCREEN_WIDTH - 1, 3, 1, SCREEN_HEIGHT - 4)
+    scrollpanel = Panel(SCREEN_WIDTH - 1, 3, 1, SCREEN_HEIGHT - 6)
     while not con.is_window_closed:
         con.clear
         filepanel.clear
+        workpanel.clear
         textpanel.clear
         buttonpanel.clear
         scrollpanel.clear
-        filepanel.rect(0, 0, SCREEN_WIDTH, 3, False)
-        filepanel.write(1, 1, 'New')
+        filestr = '\n New  Load'
+        if binding.active:
+            filestr += '  Save  Save As  ' + binding.active_bindings
+            filepanel.write(0, 0, filestr)
+            filepanel.rect(11, 0, 6, 3, False)
+            filepanel.rect(17, 0, 9, 3, False)
+            filepanel.rect(26, 0, SCREEN_WIDTH - 26, 3, False)
+        else:
+            filepanel.write(0, 0, filestr)
+            filepanel.rect(11, 0, SCREEN_WIDTH - 11, 3, False)
+        filepanel.rect(0, 0, 5, 3, False)
+        filepanel.rect(5, 0, 6, 3, False)
         textpanel.rect(0, 0, TEXT_WIDTH, TEXT_HEIGHT, False)
         addbtntxt = 'Add Binding'
         btntxtx = 1
@@ -145,11 +162,16 @@ if __name__ == '__main__':
         buttonpanel.rect(btntxtx, 0, len(rmvbtntxt) + 2, 3, False)
         btntxtx = btntxtx + 1
         buttonpanel.write(btntxtx, 1, rmvbtntxt)
+        newbtntxt = 'New Output'
+        buttonpanel.rect(SCREEN_WIDTH - len(newbtntxt) - 2, 0,
+                         len(newbtntxt) + 2, 3, False)
+        buttonpanel.write(SCREEN_WIDTH - len(newbtntxt) - 1, 1, newbtntxt)
         scrollpanel.write(0, 0, '^')
         scrollpanel.write(0, TEXT_HEIGHT - 1, 'v')
         filepanel.blit()
+        workpanel.blit(dst=textpanel.body)
         textpanel.blit()
         buttonpanel.blit()
         scrollpanel.blit()
         con.flush
-        testbinding.wait_keypress()
+        binding.wait_keypress()
