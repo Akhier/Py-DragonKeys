@@ -44,6 +44,14 @@ class Console:
     def clear(self):
         libtcodpy.console_clear(0)
 
+    @property
+    def x2(self):
+        return self.x + self.panelwidth - 1
+
+    @property
+    def y2(self):
+        return self.y + self.panelheight - 1
+
     def set_default_foreground(self, fore):
         libtcodpy.console_set_default_foreground(0, fore)
 
