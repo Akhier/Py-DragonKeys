@@ -32,6 +32,12 @@ class txtbtn:
     def ry2(self):
         return self.ry + self.h - 1
 
+    def inside(self, mx, my):
+        if mx >= self.x and mx <= self.x2 and my >= self.ry and my <= self.ry2:
+            return True
+        else:
+            return False
+
 
 binding = DragonKeys.KeyHandler()
 binding.load('Keybindings/test.csv')
@@ -107,6 +113,8 @@ while not con.is_window_closed:
                                   libtcodpy.EVENT_MOUSE,
                                   key, mouse)
     bindingspanel.write(0, 0, str((mouse.cx, mouse.cy)))
+    if BTN['NEW'].inside(mouse.cx, mouse.cy):
+        bindingspanel.write(10, 0, 'Inside')
     filepanel.blit()
     bindingspanel.blit(dst=workpanel.body)
     workpanel.blit(dst=textpanel.body)
