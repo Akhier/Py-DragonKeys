@@ -38,10 +38,11 @@ SCREEN_WIDTH = 80
 SCREEN_HEIGHT = 50
 TEXT_WIDTH = SCREEN_WIDTH - 1
 TEXT_HEIGHT = SCREEN_HEIGHT - 6
-NEW_BTN = txtbtn(0, 0, 'New')
-LOAD_BTN = txtbtn(NEW_BTN.x2 + 1, 0, 'Load')
-SAVE_BTN = txtbtn(LOAD_BTN.x2 + 1, 0, 'Save')
-SAVE_AS_BTN = txtbtn(SAVE_BTN.x2 + 1, 0, 'Save As')
+BTN = {}
+BTN['NEW'] = txtbtn(0, 0, 'New')
+BTN['LOAD'] = txtbtn(BTN['NEW'].x2 + 1, 0, 'Load')
+BTN['SAVE'] = txtbtn(BTN['LOAD'].x2 + 1, 0, 'Save')
+BTN['SAVE_AS'] = txtbtn(BTN['SAVE'].x2 + 1, 0, 'Save As')
 con = Console(SCREEN_WIDTH, SCREEN_HEIGHT, 'DragonKeybinder')
 filepanel = Panel(0, 0, SCREEN_WIDTH, 3)
 textpanel = Panel(0, 3, TEXT_WIDTH, TEXT_HEIGHT)
@@ -59,22 +60,26 @@ while not con.is_window_closed:
     buttonpanel.clear
     scrollpanel.clear
     bindingspanel.clear
-    filepanel.rect(NEW_BTN.x, NEW_BTN.y, NEW_BTN.w, NEW_BTN.h, False)
-    filepanel.write(NEW_BTN.tx, NEW_BTN.ty, NEW_BTN.txt)
-    filepanel.rect(LOAD_BTN.x, LOAD_BTN.y, LOAD_BTN.w, LOAD_BTN.h, False)
-    filepanel.write(LOAD_BTN.tx, LOAD_BTN.ty, LOAD_BTN.txt)
+    filepanel.rect(BTN['NEW'].x, BTN['NEW'].y,
+                   BTN['NEW'].w, BTN['NEW'].h, False)
+    filepanel.write(BTN['NEW'].tx, BTN['NEW'].ty, BTN['NEW'].txt)
+    filepanel.rect(BTN['LOAD'].x, BTN['LOAD'].y,
+                   BTN['LOAD'].w, BTN['LOAD'].h, False)
+    filepanel.write(BTN['LOAD'].tx, BTN['LOAD'].ty, BTN['LOAD'].txt)
     if binding.active:
-        filepanel.rect(SAVE_BTN.x, SAVE_BTN.y, SAVE_BTN.w, SAVE_BTN.h, False)
-        filepanel.write(SAVE_BTN.tx, SAVE_BTN.ty, SAVE_BTN.txt)
-        filepanel.rect(
-            SAVE_AS_BTN.x, SAVE_AS_BTN.y, SAVE_AS_BTN.w, SAVE_AS_BTN.h, False)
-        filepanel.write(SAVE_AS_BTN.tx, SAVE_AS_BTN.ty, SAVE_AS_BTN.txt)
-        filepanel.rect(
-            SAVE_AS_BTN.x2 + 1, 0, SCREEN_WIDTH - SAVE_AS_BTN.x2 - 1, 3, False)
-        filepanel.write(SAVE_AS_BTN.x2 + 2, 1, binding.active_bindings)
+        filepanel.rect(BTN['SAVE'].x, BTN['SAVE'].y,
+                       BTN['SAVE'].w, BTN['SAVE'].h, False)
+        filepanel.write(BTN['SAVE'].tx, BTN['SAVE'].ty, BTN['SAVE'].txt)
+        filepanel.rect(BTN['SAVE_AS'].x, BTN['SAVE_AS'].y,
+                       BTN['SAVE_AS'].w, BTN['SAVE_AS'].h, False)
+        filepanel.write(BTN['SAVE_AS'].tx, BTN[
+                        'SAVE_AS'].ty, BTN['SAVE_AS'].txt)
+        filepanel.rect(BTN['SAVE_AS'].x2 + 1, 0,
+                       SCREEN_WIDTH - BTN['SAVE_AS'].x2 - 1, 3, False)
+        filepanel.write(BTN['SAVE_AS'].x2 + 2, 1, binding.active_bindings)
     else:
-        filepanel.rect(
-            LOAD_BTN.x2 + 1, 0, SCREEN_WIDTH - LOAD_BTN.x2, 3, False)
+        filepanel.rect(BTN['LOAD'].x2 + 1, 0,
+                       SCREEN_WIDTH - BTN['LOAD'].x2, 3, False)
     textpanel.rect(0, 0, TEXT_WIDTH, TEXT_HEIGHT, False)
     addbtntxt = 'Add Binding'
     btntxtx = 1
