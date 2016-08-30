@@ -1,3 +1,4 @@
+import libtcodpy
 import DragonKeys
 from Panel import Panel
 from Console import Console
@@ -16,6 +17,8 @@ workpanel = Panel(1, 1, TEXT_WIDTH - 2, TEXT_HEIGHT - 2)
 bindingspanel = Panel(0, 0, TEXT_WIDTH - 2, 1)
 buttonpanel = Panel(0, SCREEN_HEIGHT - 3, SCREEN_WIDTH, 3)
 scrollpanel = Panel(SCREEN_WIDTH - 1, 3, 1, SCREEN_HEIGHT - 6)
+mouse = libtcodpy.Mouse()
+key = libtcodpy.Key()
 while not con.is_window_closed:
     con.clear
     filepanel.clear
@@ -23,6 +26,7 @@ while not con.is_window_closed:
     textpanel.clear
     buttonpanel.clear
     scrollpanel.clear
+    bindingspanel.clear
     filestr = '\n New  Load'
     if binding.active:
         filestr += '  Save  Save As  ' + binding.active_bindings
@@ -51,10 +55,14 @@ while not con.is_window_closed:
     buttonpanel.write(SCREEN_WIDTH - len(newbtntxt) - 1, 1, newbtntxt)
     scrollpanel.write(0, 0, '^')
     scrollpanel.write(0, TEXT_HEIGHT - 1, 'v')
+    libtcodpy.sys_check_for_event(libtcodpy.EVENT_KEY_PRESS |
+                                  libtcodpy.EVENT_MOUSE,
+                                  key, mouse)
+    bindingspanel.write(0, 0, str((mouse.cx, mouse.cy)))
     filepanel.blit()
+    bindingspanel.blit(dst=workpanel.body)
     workpanel.blit(dst=textpanel.body)
     textpanel.blit()
     buttonpanel.blit()
     scrollpanel.blit()
     con.flush
-    binding.wait_keypress()
