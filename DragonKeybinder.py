@@ -10,6 +10,7 @@ class txtbtn:
         self.y = y
         self.txt = txt
         self.h = 3
+        self.ry = y
 
     @property
     def tx(self):
@@ -28,8 +29,8 @@ class txtbtn:
         return self.x + self.w - 1
 
     @property
-    def y2(self):
-        return self.y + self.h - 1
+    def ry2(self):
+        return self.ry + self.h - 1
 
 
 binding = DragonKeys.KeyHandler()
@@ -53,6 +54,9 @@ textpanel = Panel(0, 3, TEXT_WIDTH, TEXT_HEIGHT)
 workpanel = Panel(1, 1, TEXT_WIDTH - 2, TEXT_HEIGHT - 2)
 bindingspanel = Panel(0, 0, TEXT_WIDTH - 2, 1)
 buttonpanel = Panel(0, SCREEN_HEIGHT - 3, SCREEN_WIDTH, 3)
+BTN['ADD_BIND'].ry += buttonpanel.y
+BTN['REM_BIND'].ry += buttonpanel.y
+BTN['NEW_OUT'].ry += buttonpanel.y
 scrollpanel = Panel(SCREEN_WIDTH - 1, 3, 1, SCREEN_HEIGHT - 6)
 mouse = libtcodpy.Mouse()
 key = libtcodpy.Key()
