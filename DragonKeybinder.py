@@ -4,30 +4,6 @@ from Panel import Panel
 from Console import Console
 
 
-class txtbtn:
-    def __init__(self, x, y, txt):
-        self.x = x
-        self.y = y
-        self.w = len(txt) + 2
-        self.h = 3
-        self.panel = Panel(x, y, len(txt), 3, border=True)
-        self.panel.write(1, 1, txt)
-
-    @property
-    def x2(self):
-        return self.x + self.w
-
-    @property
-    def y2(self):
-        return self.y + self.h
-
-    def inside(self, mx, my):
-        if mx >= self.x and mx <= self.x2 and my >= self.y and my <= self.y2:
-            return True
-        else:
-            return False
-
-
 binding = DragonKeys.KeyHandler()
 binding.load('Keybindings/test.csv')
 SCREEN_WIDTH = 80
