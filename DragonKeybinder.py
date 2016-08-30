@@ -4,12 +4,44 @@ from Panel import Panel
 from Console import Console
 
 
+class txtbtn:
+    def __init__(self, x, y, txt):
+        self.x = x
+        self.y = y
+        self.txt = txt
+        self.h = 3
+
+    @property
+    def tx(self):
+        return self.x + 1
+
+    @property
+    def ty(self):
+        return self.y + 1
+
+    @property
+    def w(self):
+        return len(self.txt) + 2
+
+    @property
+    def x2(self):
+        return self.x + self.w - 1
+
+    @property
+    def y2(self):
+        return self.y + self.h - 1
+
+
 binding = DragonKeys.KeyHandler()
 binding.load('Keybindings/test.csv')
 SCREEN_WIDTH = 80
 SCREEN_HEIGHT = 50
 TEXT_WIDTH = SCREEN_WIDTH - 1
 TEXT_HEIGHT = SCREEN_HEIGHT - 6
+NEW_BTN = txtbtn(0, 0, 'New')
+LOAD_BTN = txtbtn(NEW_BTN.x2 + 1, 0, 'Load')
+SAVE_BTN = txtbtn(LOAD_BTN.x2 + 1, 0, 'Save')
+SAVE_AS_BTN = txtbtn(SAVE_BTN.x2 + 1, 0, 'Save As')
 con = Console(SCREEN_WIDTH, SCREEN_HEIGHT, 'DragonKeybinder')
 filepanel = Panel(0, 0, SCREEN_WIDTH, 3)
 textpanel = Panel(0, 3, TEXT_WIDTH, TEXT_HEIGHT)
@@ -27,18 +59,22 @@ while not con.is_window_closed:
     buttonpanel.clear
     scrollpanel.clear
     bindingspanel.clear
-    filestr = '\n New  Load'
+    filepanel.rect(NEW_BTN.x, NEW_BTN.y, NEW_BTN.w, NEW_BTN.h, False)
+    filepanel.write(NEW_BTN.tx, NEW_BTN.ty, NEW_BTN.txt)
+    filepanel.rect(LOAD_BTN.x, LOAD_BTN.y, LOAD_BTN.w, LOAD_BTN.h, False)
+    filepanel.write(LOAD_BTN.tx, LOAD_BTN.ty, LOAD_BTN.txt)
     if binding.active:
-        filestr += '  Save  Save As  ' + binding.active_bindings
-        filepanel.write(0, 0, filestr)
-        filepanel.rect(11, 0, 6, 3, False)
-        filepanel.rect(17, 0, 9, 3, False)
-        filepanel.rect(26, 0, SCREEN_WIDTH - 26, 3, False)
+        filepanel.rect(SAVE_BTN.x, SAVE_BTN.y, SAVE_BTN.w, SAVE_BTN.h, False)
+        filepanel.write(SAVE_BTN.tx, SAVE_BTN.ty, SAVE_BTN.txt)
+        filepanel.rect(
+            SAVE_AS_BTN.x, SAVE_AS_BTN.y, SAVE_AS_BTN.w, SAVE_AS_BTN.h, False)
+        filepanel.write(SAVE_AS_BTN.tx, SAVE_AS_BTN.ty, SAVE_AS_BTN.txt)
+        filepanel.rect(
+            SAVE_AS_BTN.x2 + 1, 0, SCREEN_WIDTH - SAVE_AS_BTN.x2 - 1, 3, False)
+        filepanel.write(SAVE_AS_BTN.x2 + 2, 1, binding.active_bindings)
     else:
-        filepanel.write(0, 0, filestr)
-        filepanel.rect(11, 0, SCREEN_WIDTH - 11, 3, False)
-    filepanel.rect(0, 0, 5, 3, False)
-    filepanel.rect(5, 0, 6, 3, False)
+        filepanel.rect(
+            LOAD_BTN.x2 + 1, 0, SCREEN_WIDTH - LOAD_BTN.x2, 3, False)
     textpanel.rect(0, 0, TEXT_WIDTH, TEXT_HEIGHT, False)
     addbtntxt = 'Add Binding'
     btntxtx = 1
