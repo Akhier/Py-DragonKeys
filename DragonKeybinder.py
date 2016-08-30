@@ -43,6 +43,10 @@ BTN['NEW'] = txtbtn(0, 0, 'New')
 BTN['LOAD'] = txtbtn(BTN['NEW'].x2 + 1, 0, 'Load')
 BTN['SAVE'] = txtbtn(BTN['LOAD'].x2 + 1, 0, 'Save')
 BTN['SAVE_AS'] = txtbtn(BTN['SAVE'].x2 + 1, 0, 'Save As')
+BTN['ADD_BIND'] = txtbtn(0, 0, 'Add Binding')
+BTN['REM_BIND'] = txtbtn(BTN['ADD_BIND'].x2 + 1, 0, 'Remove Binding')
+newouttxt = 'New Output'
+BTN['NEW_OUT'] = txtbtn(SCREEN_WIDTH - len(newouttxt) - 2, 0, newouttxt)
 con = Console(SCREEN_WIDTH, SCREEN_HEIGHT, 'DragonKeybinder')
 filepanel = Panel(0, 0, SCREEN_WIDTH, 3)
 textpanel = Panel(0, 3, TEXT_WIDTH, TEXT_HEIGHT)
@@ -81,19 +85,18 @@ while not con.is_window_closed:
         filepanel.rect(BTN['LOAD'].x2 + 1, 0,
                        SCREEN_WIDTH - BTN['LOAD'].x2, 3, False)
     textpanel.rect(0, 0, TEXT_WIDTH, TEXT_HEIGHT, False)
-    addbtntxt = 'Add Binding'
-    btntxtx = 1
-    buttonpanel.rect(0, 0, len(addbtntxt) + 2, 3, False)
-    buttonpanel.write(btntxtx, 1, addbtntxt)
-    btntxtx = btntxtx + len(addbtntxt) + 1
-    rmvbtntxt = 'Remove Binding'
-    buttonpanel.rect(btntxtx, 0, len(rmvbtntxt) + 2, 3, False)
-    btntxtx = btntxtx + 1
-    buttonpanel.write(btntxtx, 1, rmvbtntxt)
-    newbtntxt = 'New Output'
-    buttonpanel.rect(SCREEN_WIDTH - len(newbtntxt) - 2, 0,
-                     len(newbtntxt) + 2, 3, False)
-    buttonpanel.write(SCREEN_WIDTH - len(newbtntxt) - 1, 1, newbtntxt)
+    buttonpanel.rect(BTN['ADD_BIND'].x, BTN['ADD_BIND'].y,
+                     BTN['ADD_BIND'].w, BTN['ADD_BIND'].h, False)
+    buttonpanel.write(BTN['ADD_BIND'].tx, BTN['ADD_BIND'].ty,
+                      BTN['ADD_BIND'].txt)
+    buttonpanel.rect(BTN['REM_BIND'].x, BTN['REM_BIND'].y,
+                     BTN['REM_BIND'].w, BTN['REM_BIND'].h, False)
+    buttonpanel.write(BTN['REM_BIND'].tx, BTN['REM_BIND'].ty,
+                      BTN['REM_BIND'].txt)
+    buttonpanel.rect(BTN['NEW_OUT'].x, BTN['NEW_OUT'].y,
+                     BTN['NEW_OUT'].w, BTN['NEW_OUT'].h, False)
+    buttonpanel.write(BTN['NEW_OUT'].tx, BTN['NEW_OUT'].ty,
+                      BTN['NEW_OUT'].txt)
     scrollpanel.write(0, 0, '^')
     scrollpanel.write(0, TEXT_HEIGHT - 1, 'v')
     libtcodpy.sys_check_for_event(libtcodpy.EVENT_KEY_PRESS |
