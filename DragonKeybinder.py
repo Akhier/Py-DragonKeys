@@ -5,7 +5,7 @@ from Console import Console
 
 
 binding = DragonKeys.KeyHandler()
-binding.load('Keybindings/test.csv')
+# binding.load('Keybindings/test.csv')
 SCREEN_WIDTH = 80
 SCREEN_HEIGHT = 50
 TEXT_WIDTH = SCREEN_WIDTH - 1
@@ -66,7 +66,8 @@ def dataentry(title, x=20, y=20, w=40, h=5):
     datapanel = windowpanel(x, y, w, h, title, 0.7)
     datakey = libtcodpy.console_wait_for_keypress(True)
     newdata = ''
-    while datakey.vk != libtcodpy.KEY_ENTER:
+    while (datakey.vk != libtcodpy.KEY_ENTER and
+           datakey.vk != libtcodpy.KEY_KPENTER):
         if (datakey.vk == libtcodpy.KEY_CHAR or
                 datakey.vk == libtcodpy.KEY_SPACE):
             if len(newdata) < w - 2:
@@ -88,6 +89,8 @@ def buttonpressed(name):
         newname = dataentry('New Name')
         if newname:
             defaultoutput = dataentry('DEFAULT Output')
+            if defaultoutput:
+                binding.new(newname, defaultoutput)
 
 
 while not con.is_window_closed:
@@ -102,15 +105,19 @@ while not con.is_window_closed:
                                   libtcodpy.EVENT_MOUSE,
                                   key, mouse)
     bindingspanel.write(0, 0, str((mouse.cx, mouse.cy)))
+    if binding.active:
+        BTN['NAME'].write(1, 1, binding.active_bindings.ljust(
+            SCREEN_WIDTH - BTN['SAVE_AS'].x2 - 3))
     pressed = False
     for name, value in BTN.iteritems():
-        if value.inside(mouse.cx, mouse.cy) and name != 'NAME':
-            bindingspanel.write(10, 0, name)
-            value.blit(ffade=0.7)
-            if mouse.lbutton_pressed:
-                pressed = name
-        else:
-            value.blit()
+        if binding.active or (name == 'NEW' or name == 'LOAD'):
+            if value.inside(mouse.cx, mouse.cy) and name != 'NAME':
+                bindingspanel.write(10, 0, name)
+                value.blit(ffade=0.7)
+                if mouse.lbutton_pressed:
+                    pressed = name
+            else:
+                value.blit()
     bindingspanel.blit(dst=workpanel.body)
     workpanel.blit(dst=textpanel.body)
     textpanel.blit()

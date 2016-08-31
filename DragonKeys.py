@@ -42,11 +42,11 @@ class KeyHandler:
 
     def save_as(self, name):
         if self._active:
-            path = name + '.csv'
-            with open(path, 'w', newline='') as file:
-                writer = csv.writer(file)
+            path = 'Keybindings/' + name + '.csv'
+            with open(path, 'w') as file:
+                writer = csv.writer(file, lineterminator='\n')
                 for key, output in self._bindingdict.iteritems():
-                    writer.writerow(key, output)
+                    writer.writerow((key, output))
                 self._bindingname = name
                 self._bindingpath = path
 
