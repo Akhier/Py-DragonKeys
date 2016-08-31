@@ -91,6 +91,16 @@ def buttonpressed(name):
             defaultoutput = dataentry('DEFAULT Output')
             if defaultoutput:
                 binding.new(newname, defaultoutput)
+    elif name == 'LOAD':
+        loadpath = dataentry('Path of file to Load')
+        if loadpath:
+            binding.load(loadpath)
+    elif name == 'SAVE':
+        binding.save()
+    elif name == 'SAVE_AS':
+        newname = dataentry('Save As')
+        if newname:
+            binding.save_as(newname)
 
 
 while not con.is_window_closed:
