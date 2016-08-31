@@ -46,29 +46,48 @@ mouse = libtcodpy.Mouse()
 key = libtcodpy.Key()
 
 
+def windowpanel(x, y, w, h, title, bf=0.0):
+    blank = Panel(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
+    blank.blit(bfade=bf)
+    window = Panel(x, y, w, h)
+    window.write(1, 1, title)
+    titlelength = len(title) + 2
+    titleheight = len(title.split('\n')) + 2
+    window.rect(0, 0, titlelength, titleheight, False)
+    window.rect(0, titleheight - 1, w, h - titleheight + 1, False)
+    window.write(0, titleheight - 1, unichr(195))
+    window.write(titlelength - 1, titleheight - 1, unichr(193))
+    window.blit()
+    con.flush
+    return window
+
+
+def dataentry(title, x=20, y=20, w=40, h=5):
+    datapanel = windowpanel(x, y, w, h, title, 0.7)
+    datakey = libtcodpy.console_wait_for_keypress(True)
+    newdata = ''
+    while datakey.vk != libtcodpy.KEY_ENTER:
+        if (datakey.vk == libtcodpy.KEY_CHAR or
+                datakey.vk == libtcodpy.KEY_SPACE):
+            if len(newdata) < w - 2:
+                newdata = newdata + chr(datakey.c)
+                datapanel.write(1, 3, newdata)
+        elif datakey.vk == libtcodpy.KEY_BACKSPACE:
+            newdata = newdata[:-1]
+            datapanel.write(len(newdata) + 1, 3, ' ')
+        elif datakey.vk == libtcodpy.KEY_ESCAPE:
+            return False
+        datapanel.blit(bfade=0.7)
+        con.flush
+        datakey = libtcodpy.console_wait_for_keypress(True)
+    return newdata
+
+
 def buttonpressed(name):
     if name == 'NEW':
-        namepanel = Panel(20, 20, 40, 10)
-        namepanel.write(1, 1, 'New Name')
-        namepanel.rect(0, 0, 10, 3, False)
-        namepanel.rect(0, 2, 40, 3, False)
-        namepanel.write(0, 2, unichr(195))
-        namepanel.write(9, 2, unichr(193))
-        namepanel.blit(bfade=0.5)
-        con.flush
-        nkey = libtcodpy.console_wait_for_keypress(True)
-        newname = ''
-        while nkey.vk != libtcodpy.KEY_ENTER:
-            if nkey.vk == libtcodpy.KEY_CHAR or nkey.vk == libtcodpy.KEY_SPACE:
-                if len(newname) < 38:
-                    newname = newname + chr(nkey.c)
-                    namepanel.write(1, 3, newname)
-            elif nkey.vk == libtcodpy.KEY_BACKSPACE:
-                newname = newname[:-1]
-                namepanel.write(len(newname) + 1, 3, ' ')
-            namepanel.blit()
-            con.flush
-            nkey = libtcodpy.console_wait_for_keypress(True)
+        newname = dataentry('New Name')
+        if newname:
+            defaultoutput = dataentry('DEFAULT Output')
 
 
 while not con.is_window_closed:
