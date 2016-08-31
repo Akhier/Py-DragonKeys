@@ -44,6 +44,33 @@ bindingspanel = Panel(0, 0, TEXT_WIDTH - 2, 1)
 scrollpanel = Panel(SCREEN_WIDTH - 1, 3, 1, SCREEN_HEIGHT - 6)
 mouse = libtcodpy.Mouse()
 key = libtcodpy.Key()
+
+
+def buttonpressed(name):
+    if name == 'NEW':
+        namepanel = Panel(20, 20, 40, 10)
+        namepanel.write(1, 1, 'New Name')
+        namepanel.rect(0, 0, 10, 3, False)
+        namepanel.rect(0, 2, 40, 3, False)
+        namepanel.write(0, 2, unichr(195))
+        namepanel.write(9, 2, unichr(193))
+        namepanel.blit(bfade=0.5)
+        con.flush
+        nkey = libtcodpy.console_wait_for_keypress(True)
+        newname = ''
+        while nkey.vk != libtcodpy.KEY_ENTER:
+            if nkey.vk == libtcodpy.KEY_CHAR or nkey.vk == libtcodpy.KEY_SPACE:
+                if len(newname) < 38:
+                    newname = newname + chr(nkey.c)
+                    namepanel.write(1, 3, newname)
+            elif nkey.vk == libtcodpy.KEY_BACKSPACE:
+                newname = newname[:-1]
+                namepanel.write(len(newname) + 1, 3, ' ')
+            namepanel.blit()
+            con.flush
+            nkey = libtcodpy.console_wait_for_keypress(True)
+
+
 while not con.is_window_closed:
     con.clear
     workpanel.clear
@@ -56,16 +83,19 @@ while not con.is_window_closed:
                                   libtcodpy.EVENT_MOUSE,
                                   key, mouse)
     bindingspanel.write(0, 0, str((mouse.cx, mouse.cy)))
+    pressed = False
     for name, value in BTN.iteritems():
         if value.inside(mouse.cx, mouse.cy) and name != 'NAME':
             bindingspanel.write(10, 0, name)
             value.blit(ffade=0.7)
-            # if mouse.lbutton_pressed:
-            #     buttonpressed(name)
+            if mouse.lbutton_pressed:
+                pressed = name
         else:
             value.blit()
     bindingspanel.blit(dst=workpanel.body)
     workpanel.blit(dst=textpanel.body)
     textpanel.blit()
     scrollpanel.blit()
+    if pressed:
+        buttonpressed(pressed)
     con.flush
