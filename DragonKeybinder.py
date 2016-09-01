@@ -18,11 +18,8 @@ BTN['NEW'].write(1, 1, temp)
 temp = 'Load'
 BTN['LOAD'] = Panel(BTN['NEW'].x2 + 1, 0, len(temp) + 2, 3, border=True)
 BTN['LOAD'].write(1, 1, temp)
-temp = 'Save'
-BTN['SAVE'] = Panel(BTN['LOAD'].x2 + 1, 0, len(temp) + 2, 3, border=True)
-BTN['SAVE'].write(1, 1, temp)
 temp = 'Save As'
-BTN['SAVE_AS'] = Panel(BTN['SAVE'].x2 + 1, 0, len(temp) + 2, 3, border=True)
+BTN['SAVE_AS'] = Panel(BTN['LOAD'].x2 + 1, 0, len(temp) + 2, 3, border=True)
 BTN['SAVE_AS'].write(1, 1, temp)
 temp = ''.ljust(SCREEN_WIDTH - BTN['SAVE_AS'].x2 - 3)
 BTN['NAME'] = Panel(BTN['SAVE_AS'].x2 + 1, 0, len(temp) + 2, 3, border=True)
@@ -110,8 +107,6 @@ def buttonpressed(name):
         loadpath = dataentry('Path of file to Load')
         if loadpath:
             binding.load(loadpath)
-    elif name == 'SAVE':
-        binding.save()
     elif name == 'SAVE_AS':
         newname = dataentry('Save As')
         if newname:
@@ -130,6 +125,7 @@ def buttonpressed(name):
             newoutput = dataentry('Enter Output Now')
             if newoutput:
                 binding.add_specified_binding(newbind, newoutput)
+                binding.save()
 
 
 while not con.is_window_closed:
