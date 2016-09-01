@@ -97,6 +97,7 @@ def msg(title, message, x=20, y=20, w=40, h=5):
 
 
 def buttonpressed(name):
+    global selected
     if name == 'NEW':
         newname = dataentry('New Name')
         if newname:
@@ -126,6 +127,17 @@ def buttonpressed(name):
             if newoutput:
                 binding.add_specified_binding(newbind, newoutput)
                 binding.save()
+    elif name == 'EDIT_BIND' and selected:
+        newbind = msg('Enter new Key to Bind',
+                      'Please press the key you want to bind')
+        if newbind.vk == libtcodpy.KEY_CHAR:
+            newbind = chr(newbind.c)
+        else:
+            newbind = str(newbind.vk)
+        binding.remove_specified_binding(selected[1])
+        binding.add_specified_binding(newbind, selected[0])
+        selected = (selected[0], newbind)
+        binding.save()
 
 
 while not con.is_window_closed:
