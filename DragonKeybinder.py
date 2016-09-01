@@ -27,29 +27,18 @@ BTN['SAVE_AS'].write(1, 1, temp)
 temp = ''.ljust(SCREEN_WIDTH - BTN['SAVE_AS'].x2 - 3)
 BTN['NAME'] = Panel(BTN['SAVE_AS'].x2 + 1, 0, len(temp) + 2, 3, border=True)
 BTN['NAME'].write(1, 1, temp)
-temp = 'AddBinding'
-BTN['ADD_BIND'] = Panel(0, SCREEN_HEIGHT - 3, len(temp) + 2, 3, border=True)
+temp = 'Add Binding'
+BTN['ADD_BIND'] = Panel(0, SCREEN_HEIGHT - 3,
+                        len(temp) + 2, 3, border=True)
 BTN['ADD_BIND'].write(1, 1, temp)
-temp = 'EditBinding'
+temp = 'Edit Binding'
 BTN['EDIT_BIND'] = Panel(BTN['ADD_BIND'].x2 + 1, SCREEN_HEIGHT - 3,
                          len(temp) + 2, 3, border=True)
 BTN['EDIT_BIND'].write(1, 1, temp)
-temp = 'RemoveBinding'
+temp = 'Remove Binding'
 BTN['REM_BIND'] = Panel(BTN['EDIT_BIND'].x2 + 1, SCREEN_HEIGHT - 3,
                         len(temp) + 2, 3, border=True)
 BTN['REM_BIND'].write(1, 1, temp)
-temp = 'AddOutput'
-BTN['ADD_OUT'] = Panel(BTN['REM_BIND'].x2 + 1, SCREEN_HEIGHT - 3,
-                       len(temp) + 2, 3, border=True)
-BTN['ADD_OUT'].write(1, 1, temp)
-temp = 'EditOutput'
-BTN['EDIT_OUT'] = Panel(BTN['ADD_OUT'].x2 + 1, SCREEN_HEIGHT - 3,
-                        len(temp) + 2, 3, border=True)
-BTN['EDIT_OUT'].write(1, 1, temp)
-temp = 'RemoveOutput'
-BTN['REM_OUT'] = Panel(BTN['EDIT_OUT'].x2 + 1, SCREEN_HEIGHT - 3,
-                       len(temp) + 2, 3, border=True)
-BTN['REM_OUT'].write(1, 1, temp)
 BTN['SCROLL_UP'] = Panel(SCREEN_WIDTH - 1, 3, 1, 1)
 BTN['SCROLL_UP'].write(0, 0, unichr(30))
 BTN['SCROLL_DOWN'] = Panel(SCREEN_WIDTH - 1, 2 + TEXT_HEIGHT, 1, 1)
@@ -102,6 +91,14 @@ def dataentry(title, x=20, y=20, w=40, h=5):
     return newdata
 
 
+def msg(title, message, x=20, y=20, w=40, h=5):
+    errorpanel = windowpanel(x, y, w, h, title, 0.7)
+    errorpanel.write(1, 3, message)
+    errorpanel.blit()
+    con.flush
+    return libtcodpy.console_wait_for_keypress(True)
+
+
 def buttonpressed(name):
     if name == 'NEW':
         newname = dataentry('New Name')
@@ -119,6 +116,20 @@ def buttonpressed(name):
         newname = dataentry('Save As')
         if newname:
             binding.save_as(newname)
+    elif name == 'ADD_BIND':
+        newbind = msg('Enter Key to Bind',
+                      'Please press the key you want to bind')
+        if newbind.vk == libtcodpy.KEY_CHAR:
+            newbind = chr(newbind.c)
+        else:
+            newbind = str(newbind.vk)
+        if newbind in binding.dict:
+            msg('Duplicate Key',
+                'An output already exists for that keypress', w=44)
+        else:
+            newoutput = dataentry('Enter Output Now')
+            if newoutput:
+                binding.add_specified_binding(newbind, newoutput)
 
 
 while not con.is_window_closed:
@@ -165,6 +176,6 @@ while not con.is_window_closed:
     workpanel.blit(dst=textpanel.body)
     textpanel.blit()
     scrollpanel.blit()
+    con.flush
     if pressed:
         buttonpressed(pressed)
-    con.flush
