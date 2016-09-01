@@ -18,6 +18,10 @@ class KeyHandler:
     def active(self):
         return self._active
 
+    @property
+    def dict(self):
+        return self._bindingdict
+
     def _clear(self):
         self._bindingname = ''
         self._bindingpath = ''
@@ -56,8 +60,8 @@ class KeyHandler:
     def new(self, name, defaultouptut):
         self._clear()
         self._bindingdict['DEFAULT'] = defaultouptut
-        self.save_as(name)
         self._active = True
+        self.save_as(name)
 
     def check_keypress(self):
         key = libtcodpy.console_check_for_keypress(True)

@@ -114,7 +114,15 @@ while not con.is_window_closed:
     libtcodpy.sys_check_for_event(libtcodpy.EVENT_KEY_PRESS |
                                   libtcodpy.EVENT_MOUSE,
                                   key, mouse)
-    bindingspanel.write(0, 0, str((mouse.cx, mouse.cy)))
+    bindingtxt = ''
+    for bind, output in binding.dict.iteritems():
+        if bindingtxt:
+            bindingtxt = bindingtxt + '\n'
+        bindingtxt = bindingtxt + output + ': ' + bind
+    bindheight = len(bindingtxt.split('\n'))
+    if bindheight != bindingspanel.panelheight:
+        bindingspanel = Panel(0, 0, TEXT_WIDTH - 2, bindheight)
+    bindingspanel.write(0, 0, bindingtxt)
     if binding.active:
         BTN['NAME'].write(1, 1, binding.active_bindings.ljust(
             SCREEN_WIDTH - BTN['SAVE_AS'].x2 - 3))
@@ -122,7 +130,6 @@ while not con.is_window_closed:
     for name, value in BTN.iteritems():
         if binding.active or (name == 'NEW' or name == 'LOAD'):
             if value.inside(mouse.cx, mouse.cy) and name != 'NAME':
-                bindingspanel.write(10, 0, name)
                 value.blit(ffade=0.7)
                 if mouse.lbutton_pressed:
                     pressed = name
