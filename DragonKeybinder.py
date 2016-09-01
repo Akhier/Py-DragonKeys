@@ -96,8 +96,7 @@ def msg(title, message, x=20, y=20, w=40, h=5):
     return libtcodpy.console_wait_for_keypress(True)
 
 
-def buttonpressed(name):
-    global selected
+def buttonpressed(name, selected):
     if name == 'NEW':
         newname = dataentry('New Name')
         if newname:
@@ -137,6 +136,10 @@ def buttonpressed(name):
         binding.remove_specified_binding(selected[1])
         binding.add_specified_binding(newbind, selected[0])
         selected = (selected[0], newbind)
+        binding.save()
+    elif name == 'REM_BIND' and selected:
+        binding.remove_specified_binding(selected[1])
+        selected = False
         binding.save()
 
 
@@ -187,4 +190,4 @@ while not con.is_window_closed:
     scrollpanel.blit()
     con.flush
     if pressed:
-        buttonpressed(pressed)
+        buttonpressed(pressed, selected)
