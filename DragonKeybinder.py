@@ -5,7 +5,7 @@ from Console import Console
 
 
 binding = DragonKeys.KeyHandler()
-# binding.load('Keybindings/test.csv')
+binding.load('Keybindings/test.csv')
 SCREEN_WIDTH = 80
 SCREEN_HEIGHT = 50
 TEXT_WIDTH = SCREEN_WIDTH - 1
@@ -27,11 +27,11 @@ BTN['SAVE_AS'].write(1, 1, temp)
 temp = ''.ljust(SCREEN_WIDTH - BTN['SAVE_AS'].x2 - 3)
 BTN['NAME'] = Panel(BTN['SAVE_AS'].x2 + 1, 0, len(temp) + 2, 3, border=True)
 BTN['NAME'].write(1, 1, temp)
-temp = 'Add Binding'
-BTN['ADD_BIND'] = Panel(0, SCREEN_HEIGHT - 3, len(temp) + 2, 3, border=True)
-BTN['ADD_BIND'].write(1, 1, temp)
+temp = 'Edit Binding'
+BTN['EDIT_BIND'] = Panel(0, SCREEN_HEIGHT - 3, len(temp) + 2, 3, border=True)
+BTN['EDIT_BIND'].write(1, 1, temp)
 temp = 'Remove Binding'
-BTN['REM_BIND'] = Panel(BTN['ADD_BIND'].x2 + 1, SCREEN_HEIGHT - 3,
+BTN['REM_BIND'] = Panel(BTN['EDIT_BIND'].x2 + 1, SCREEN_HEIGHT - 3,
                         len(temp) + 2, 3, border=True)
 BTN['REM_BIND'].write(1, 1, temp)
 temp = 'New Output'
@@ -44,6 +44,8 @@ bindingspanel = Panel(0, 0, TEXT_WIDTH - 2, 1)
 scrollpanel = Panel(SCREEN_WIDTH - 1, 3, 1, SCREEN_HEIGHT - 6)
 mouse = libtcodpy.Mouse()
 key = libtcodpy.Key()
+toprow = 0
+selectedouptput = False
 
 
 def windowpanel(x, y, w, h, title, bf=0.0):
@@ -115,10 +117,14 @@ while not con.is_window_closed:
                                   libtcodpy.EVENT_MOUSE,
                                   key, mouse)
     bindingtxt = ''
+    tempoutputlist = []
     for bind, output in binding.dict.iteritems():
         if bindingtxt:
             bindingtxt = bindingtxt + '\n'
+        if output == selectedouptput:
+            bindingtxt = bindingtxt + '> '
         bindingtxt = bindingtxt + output + ': ' + bind
+        tempoutputlist.append(output)
     bindheight = len(bindingtxt.split('\n'))
     if bindheight != bindingspanel.panelheight:
         bindingspanel = Panel(0, 0, TEXT_WIDTH - 2, bindheight)
@@ -135,7 +141,13 @@ while not con.is_window_closed:
                     pressed = name
             else:
                 value.blit()
-    bindingspanel.blit(dst=workpanel.body)
+    if workpanel.inside(mouse.cx, mouse.cy - 3):
+        py = mouse.cy - 4
+        if py <= bindheight:
+            if mouse.lbutton_pressed:
+                selectedouptput = tempoutputlist[py + toprow]
+
+    bindingspanel.blit(dst=workpanel.body, ydst=toprow)
     workpanel.blit(dst=textpanel.body)
     textpanel.blit()
     scrollpanel.blit()
