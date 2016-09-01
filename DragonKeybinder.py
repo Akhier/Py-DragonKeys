@@ -127,20 +127,32 @@ def buttonpressed(name, selected):
                 binding.add_specified_binding(newbind, newoutput)
                 binding.save()
     elif name == 'EDIT_BIND' and selected:
-        newbind = msg('Enter new Key to Bind',
-                      'Please press the key you want to bind')
-        if newbind.vk == libtcodpy.KEY_CHAR:
-            newbind = chr(newbind.c)
+        if selected[1] != 'DEFAULT':
+            newbind = msg('Enter new Key to Bind',
+                          'Please press the key you want to bind')
+            if newbind.vk == libtcodpy.KEY_CHAR:
+                newbind = chr(newbind.c)
+            else:
+                newbind = str(newbind.vk)
+            binding.remove_specified_binding(selected[1])
+            binding.add_specified_binding(newbind, selected[0])
+            selected = (selected[0], newbind)
+            binding.save()
         else:
-            newbind = str(newbind.vk)
-        binding.remove_specified_binding(selected[1])
-        binding.add_specified_binding(newbind, selected[0])
-        selected = (selected[0], newbind)
-        binding.save()
+            msg('Unable to Edit Default', 'As DEFAULT is a required binding' +
+                ' of\nthe DragonKeys keyhandler to prevent\nproblems editing' +
+                ' it with this program\nhas been disallowed\n(you could ' +
+                'still edit the csv\nfile itself of course)', h=10)
+            selected = False
     elif name == 'REM_BIND' and selected:
-        binding.remove_specified_binding(selected[1])
-        selected = False
-        binding.save()
+        if selected[1] != 'DEFAULT':
+            binding.remove_specified_binding(selected[1])
+            selected = False
+            binding.save()
+        else:
+            msg('Unable to Delete Default', 'DEFAULT is a required part ' +
+                'of the\nDragonKeys keyhandler so may not\nbe deleted', h=7)
+            selected = False
 
 
 while not con.is_window_closed:
