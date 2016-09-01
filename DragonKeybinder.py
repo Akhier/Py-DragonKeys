@@ -50,7 +50,7 @@ scrollpanel = Panel(SCREEN_WIDTH - 1, 4, 1, SCREEN_HEIGHT - 8)
 mouse = libtcodpy.Mouse()
 key = libtcodpy.Key()
 toprow = 0
-selectedouptput = False
+selected = False
 
 
 def windowpanel(x, y, w, h, title, bf=0.0):
@@ -142,14 +142,15 @@ while not con.is_window_closed:
                                   libtcodpy.EVENT_MOUSE,
                                   key, mouse)
     bindingtxt = ''
-    tempoutputlist = []
+    tempbindlist = []
     for bind, output in binding.dict.iteritems():
         if bindingtxt:
             bindingtxt = bindingtxt + '\n'
-        if output == selectedouptput:
-            bindingtxt = bindingtxt + '> '
+        if selected:
+            if output == selected[0] and bind == selected[1]:
+                bindingtxt = bindingtxt + '> '
         bindingtxt = bindingtxt + output + ': ' + bind
-        tempoutputlist.append(output)
+        tempbindlist.append((output, bind))
     bindheight = len(bindingtxt.split('\n'))
     if bindheight != bindingspanel.panelheight:
         bindingspanel = Panel(0, 0, TEXT_WIDTH - 2, bindheight)
@@ -170,7 +171,7 @@ while not con.is_window_closed:
         py = mouse.cy - 4
         if py <= bindheight:
             if mouse.lbutton_pressed:
-                selectedouptput = tempoutputlist[py + toprow]
+                selected = tempbindlist[py + toprow]
 
     bindingspanel.blit(dst=workpanel.body, ydst=toprow)
     workpanel.blit(dst=textpanel.body)
