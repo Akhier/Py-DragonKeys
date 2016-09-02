@@ -63,8 +63,7 @@ class KeyHandler:
         self._active = True
         self.save_as(name)
 
-    def check_keypress(self):
-        key = libtcodpy.console_check_for_keypress(True)
+    def check_key(self, key):
         if key.vk == libtcodpy.KEY_NONE:
             return self._bindingdict['DEFAULT']
         else:
@@ -80,6 +79,10 @@ class KeyHandler:
                     return self._bindingdict[keystr]
                 else:
                     return self._bindingdict['DEFAULT']
+
+    def check_keypress(self):
+        key = libtcodpy.console_check_for_keypress(True)
+        return self.check_key(key)
 
     def wait_keypress(self):
         key = libtcodpy.console_wait_for_keypress(True)

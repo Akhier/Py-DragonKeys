@@ -23,7 +23,6 @@ keydict = {
     '60': 'KEY_F11', '61': 'KEY_F12', '62': 'KEY_NUMLOCK',
     '63': 'KEY_SCROLLLOCK', '64': 'KEY_SPACE', '65': 'KEY_CHAR'}
 binding = DragonKeys.KeyHandler()
-binding.load('Keybindings/test.csv')
 SCREEN_WIDTH = 80
 SCREEN_HEIGHT = 50
 TEXT_WIDTH = SCREEN_WIDTH - 1
