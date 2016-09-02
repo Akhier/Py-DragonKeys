@@ -817,22 +817,18 @@ def handle_keys():
     if game_state == 'playing':
         if output == 'didnt-take-turn':
             return output
-        elif output == 'attackup':
-            player_move_or_attack(0, -1)
-        elif output == 'attackdown':
-            player_move_or_attack(0, 1)
-        elif output == 'attackleft':
-            player_move_or_attack(-1, 0)
-        elif output == 'attackright':
-            player_move_or_attack(1, 0)
-        elif output == 'attackupleft':
-            player_move_or_attack(-1, -1)
-        elif output == 'attackupright':
-            player_move_or_attack(1, -1)
-        elif output == 'attackdownleft':
-            player_move_or_attack(-1, 1)
-        elif output == 'attackdownright':
-            player_move_or_attack(1, 1)
+        elif 'attack' in output:
+            x = 0
+            y = 0
+            if 'up' in output:
+                y = -1
+            elif 'down' in output:
+                y = 1
+            if 'left' in output:
+                x = -1
+            elif 'right' in output:
+                x = 1
+            player_move_or_attack(x, y)
         elif output == 'grab':
             for object in objects:
                 if object.x == player.x and \
