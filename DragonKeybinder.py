@@ -4,6 +4,24 @@ from Panel import Panel
 from Console import Console
 
 
+keydict = {
+    '1': 'KEY_ESCAPE', '2': 'KEY_BACKSPACE', '3': 'KEY_TAB', '4': 'KEY_ENTER',
+    '5': 'KEY_SHIFT', '6': 'KEY_CONTROL', '7': 'KEY_ALT', '8': 'KEY_PAUSE',
+    '9': 'KEY_CAPSLOCK', '10': 'KEY_PAGEUP', '11': 'KEY_PAGEDOWN',
+    '12': 'KEY_END', '13': 'KEY_HOME', '14': 'KEY_UP', '15': 'KEY_LEFT',
+    '16': 'KEY_RIGHT', '17': 'KEY_DOWN', '18': 'KEY_PRINTSCREEN',
+    '19': 'KEY_INSERT', '20': 'KEY_DELETE', '21': 'KEY_LWIN', '22': 'KEY_RWIN',
+    '23': 'KEY_APPS', '24': 'KEY_0', '25': 'KEY_1', '26': 'KEY_2',
+    '27': 'KEY_3', '28': 'KEY_4', '29': 'KEY_5', '30': 'KEY_6', '31': 'KEY_7',
+    '32': 'KEY_8', '33': 'KEY_9', '34': 'KEY_KP0', '35': 'KEY_KP1',
+    '36': 'KEY_KP2', '37': 'KEY_KP3', '38': 'KEY_KP4', '39': 'KEY_KP5',
+    '40': 'KEY_KP6', '41': 'KEY_KP7', '42': 'KEY_KP8', '43': 'KEY_KP9',
+    '44': 'KEY_KPADD', '45': 'KEY_KPSUB', '46': 'KEY_KPDIV', '47': 'KEY_KPMUL',
+    '48': 'KEY_KPDEC', '49': 'KEY_KPENTER', '50': 'KEY_F1', '51': 'KEY_F2',
+    '52': 'KEY_F3', '53': 'KEY_F4', '54': 'KEY_F5', '55': 'KEY_F6',
+    '56': 'KEY_F7', '57': 'KEY_F8', '58': 'KEY_F9', '59': 'KEY_F10',
+    '60': 'KEY_F11', '61': 'KEY_F12', '62': 'KEY_NUMLOCK',
+    '63': 'KEY_SCROLLLOCK', '64': 'KEY_SPACE', '65': 'KEY_CHAR'}
 binding = DragonKeys.KeyHandler()
 binding.load('Keybindings/test.csv')
 SCREEN_WIDTH = 80
