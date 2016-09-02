@@ -194,7 +194,11 @@ while not con.is_window_closed:
         if selected:
             if output == selected[0] and bind == selected[1]:
                 bindingtxt = bindingtxt + '> '
-        bindingtxt = bindingtxt + output + ': ' + bind
+        bindingtxt = bindingtxt + output + ': '
+        if bind in keydict:
+            bindingtxt = bindingtxt + keydict[bind]
+        else:
+            bindingtxt = bindingtxt + bind
         tempbindlist.append((output, bind))
     bindheight = len(bindingtxt.split('\n'))
     if bindheight != bindingspanel.panelheight:
