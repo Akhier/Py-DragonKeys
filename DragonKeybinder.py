@@ -93,7 +93,11 @@ def msg(title, message, x=20, y=20, w=40, h=5):
     errorpanel.write(1, 3, message)
     errorpanel.blit()
     con.flush
-    return libtcodpy.console_wait_for_keypress(True)
+    newkey = libtcodpy.console_wait_for_keypress(False)
+    isshift = libtcodpy.console_is_key_pressed(libtcodpy.KEY_SHIFT)
+    if isshift:
+        newkey = libtcodpy.console_wait_for_keypress(True)
+    return newkey
 
 
 def buttonpressed(name, selected):
