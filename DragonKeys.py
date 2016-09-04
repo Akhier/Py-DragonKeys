@@ -64,26 +64,23 @@ class KeyHandler:
         self._active = True
         self.save_as(name)
 
-    def check_key(self, key):
-        key = _interpret_key(key)
+    def _checking(self, key):
         if key in self._bindingdict:
             return self._bindingdict[key]
         else:
             return self._bindingdict['DEFAULT']
+
+    def check_key(self, key):
+        key = _interpret_key(key)
+        return self._checking(key)
 
     def check_keypress(self):
         key = check_keypress()
-        if key in self._bindingdict:
-            return self._bindingdict[key]
-        else:
-            return self._bindingdict['DEFAULT']
+        return self._checking(key)
 
     def wait_keypress(self):
         key = wait_keypress()
-        if key in self._bindingdict:
-            return self._bindingdict[key]
-        else:
-            return self._bindingdict['DEFAULT']
+        return self._checking(key)
 
     def add_specified_binding(self, key, output):
         self._bindingdict[key] = output
