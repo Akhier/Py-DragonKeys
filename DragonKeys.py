@@ -1,5 +1,5 @@
 # By Akhier Dragonheart
-from DKlibtcod import *
+from DKlibtcod import wait_key, check_key, _interpret_key
 import os.path
 import csv
 
@@ -65,6 +65,7 @@ class KeyHandler:
         self.save_as(name)
 
     def check_key(self, key):
+        key = _interpret_key(key)
         if key in self._bindingdict:
             return self._bindingdict[key]
         else:
