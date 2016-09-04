@@ -64,78 +64,32 @@ class KeyHandler:
         self.save_as(name)
 
     def check_key(self, key):
-        if key.vk == libtcodpy.KEY_NONE:
-            return self._bindingdict['DEFAULT']
+        if key in self._bindingdict:
+            return self._bindingdict[key]
         else:
-            if key.vk == libtcodpy.KEY_CHAR:
-                keychar = chr(key.c)
-                if keychar in self._bindingdict:
-                    return self._bindingdict[keychar]
-                else:
-                    return self._bindingdict['DEFAULT']
-            else:
-                keystr = str(key.vk)
-                if keystr in self._bindingdict:
-                    return self._bindingdict[keystr]
-                else:
-                    return self._bindingdict['DEFAULT']
+            return self._bindingdict['DEFAULT']
 
     def check_keypress(self):
-        key = libtcod_check_key()
+        key = check_key()
         return self.check_key(key)
 
     def wait_keypress(self):
         key = wait_key()
-        if key.vk == libtcodpy.KEY_CHAR:
-            keychar = chr(key.c)
-            if keychar in self._bindingdict:
-                return self._bindingdict[keychar]
-            else:
-                return self._bindingdict['DEFAULT']
+        if key in self._bindingdict:
+            return self._bindingdict[key]
         else:
-            keystr = str(key.vk)
-            if keystr in self._bindingdict:
-                return self._bindingdict[keystr]
-            else:
-                return self._bindingdict['DEFAULT']
+            return self._bindingdict['DEFAULT']
 
     def add_specified_binding(self, key, output):
         self._bindingdict[key] = output
 
     def add_binding(self, output):
         key = wait_key()
-        if key.vk == libtcodpy.KEY_CHAR:
-            keychar = chr(key.c)
-            self.add_specified_binding(keychar, output)
-        else:
-            keystr = str(key.vk)
-            self.add_specified_binding(keystr, output)
+        self.add_specified_binding(key, output)
 
     def remove_specified_binding(self, key):
         self._bindingdict.pop(key, None)
 
     def remove_binding(self):
         key = wait_key()
-        if key.vk == libtcodpy.KEY_CHAR:
-            keychar = chr(key.c)
-            self.remove_specified_binding(keychar)
-        else:
-            keystr = str(key.vk)
-            self.remove_specified_binding(keystr)
-
-
-if __name__ == '__main__':
-    from Panel import Panel
-    from Console import Console
-    testbinding = KeyHandler()
-    testbinding.load('Keybindings/test.csv')
-    SCREEN_WIDTH = 40
-    SCREEN_HEIGHT = 25
-    con = Console(SCREEN_WIDTH, SCREEN_HEIGHT, 'test')
-    pan = Panel(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
-    while not con.is_window_closed:
-        con.clear
-        pan.clear
-        pan.write(0, 0, testbinding.wait_keypress())
-        pan.blit()
-        con.flush
+        self.remove_specified_binding(key)
