@@ -1,4 +1,4 @@
-import DKlibtcod
+from DKlibtcod import *
 import os.path
 import csv
 
@@ -81,11 +81,11 @@ class KeyHandler:
                     return self._bindingdict['DEFAULT']
 
     def check_keypress(self):
-        key = DKlibtcod.libtcod_check_key()
+        key = libtcod_check_key()
         return self.check_key(key)
 
     def wait_keypress(self):
-        key = DKlibtcod.libtcod_wait_key()
+        key = wait_key()
         if key.vk == libtcodpy.KEY_CHAR:
             keychar = chr(key.c)
             if keychar in self._bindingdict:
@@ -103,7 +103,7 @@ class KeyHandler:
         self._bindingdict[key] = output
 
     def add_binding(self, output):
-        key = DKlibtcod.libtcod_wait_key()
+        key = wait_key()
         if key.vk == libtcodpy.KEY_CHAR:
             keychar = chr(key.c)
             self.add_specified_binding(keychar, output)
@@ -115,7 +115,7 @@ class KeyHandler:
         self._bindingdict.pop(key, None)
 
     def remove_binding(self):
-        key = DKlibtcod.libtcod_wait_key()
+        key = wait_key()
         if key.vk == libtcodpy.KEY_CHAR:
             keychar = chr(key.c)
             self.remove_specified_binding(keychar)
