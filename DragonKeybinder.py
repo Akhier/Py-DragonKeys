@@ -1,3 +1,4 @@
+# by Akhier Dragonheart
 import libtcodpy
 import DragonKeys
 from Panel import Panel
