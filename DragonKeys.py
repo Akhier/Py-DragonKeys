@@ -1,5 +1,5 @@
 # By Akhier Dragonheart
-from DKlibtcod import wait_key, check_key, _interpret_key
+from DKlibtcod import wait_keypress, check_keypress, _interpret_key
 import os.path
 import csv
 
@@ -72,11 +72,14 @@ class KeyHandler:
             return self._bindingdict['DEFAULT']
 
     def check_keypress(self):
-        key = check_key()
-        return self.check_key(key)
+        key = check_keypress()
+        if key in self._bindingdict:
+            return self._bindingdict[key]
+        else:
+            return self._bindingdict['DEFAULT']
 
     def wait_keypress(self):
-        key = wait_key()
+        key = wait_keypress()
         if key in self._bindingdict:
             return self._bindingdict[key]
         else:
@@ -86,12 +89,12 @@ class KeyHandler:
         self._bindingdict[key] = output
 
     def add_binding(self, output):
-        key = wait_key()
+        key = wait_keypress()
         self.add_specified_binding(key, output)
 
     def remove_specified_binding(self, key):
         self._bindingdict.pop(key, None)
 
     def remove_binding(self):
-        key = wait_key()
+        key = wait_keypress()
         self.remove_specified_binding(key)

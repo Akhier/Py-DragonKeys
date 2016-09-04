@@ -2,12 +2,12 @@
 import libtcodpy
 
 
-def wait_key(flush=True):
+def wait_keypress(flush=True):
     key = libtcodpy.console_wait_for_keypress(flush)
     return _interpret_key(key)
 
 
-def check_key():
+def check_keypress():
     key = libtcodpy.console_check_for_keypress()
     return _interpret_key(key)
 
