@@ -1024,6 +1024,7 @@ def next_level():
     message('After a rare moment of peace, you descend deeper into ' +
             'the heart of the dungeon...', libtcod.red)
     make_map()
+    console.set_default_background(libtcod.black)
     initialize_fov()
 
 
@@ -1062,7 +1063,6 @@ def play_game():
             object.clear()
 
         player_action = handle_keys()
-        print(player_action)
         if player_action == 'exit':
             save_game()
             break
