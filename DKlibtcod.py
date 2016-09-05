@@ -8,7 +8,11 @@ def wait_keypress(flush=True):
 
 
 def check_keypress():
-    key = libtcodpy.console_check_for_keypress()
+    key = libtcodpy.Key()
+    mouse = libtcodpy.Mouse()
+    libtcodpy.sys_check_for_event(libtcodpy.EVENT_KEY_PRESS |
+                                  libtcodpy.EVENT_MOUSE,
+                                  key, mouse)
     return _interpret_key(key)
 
 
