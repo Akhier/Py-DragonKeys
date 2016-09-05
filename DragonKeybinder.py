@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# By Akhier Dragonheart
-=======
 # by Akhier Dragonheart
 >>>>>>> refs/remotes/origin/stable
 import libtcodpy

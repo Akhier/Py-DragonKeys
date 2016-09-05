@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 # By Akhier Dragonheart
 from DKlibtcod import wait_keypress, check_keypress, _interpret_key
-=======
-# by Akhier Dragonheart
-import libtcodpy
->>>>>>> refs/remotes/origin/stable
 import os.path
 import csv
 
