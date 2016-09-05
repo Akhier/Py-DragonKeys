@@ -763,6 +763,8 @@ def handle_keys():
     if game_state == 'playing':
         if output == 'didnt-take-turn':
             return output
+        elif output == 'pass':
+            return output
         elif 'attack' in output:
             x = 0
             y = 0
