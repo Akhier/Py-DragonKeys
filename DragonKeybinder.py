@@ -1,4 +1,5 @@
 # by Akhier Dragonheart
+>>>>>>> refs/remotes/origin/stable
 import libtcodpy
 import DragonKeys
 from Panel import Panel

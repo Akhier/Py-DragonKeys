@@ -143,16 +143,11 @@ class Object:
     def draw(self):
         if (libtcod.map_is_in_fov(fov_map, self.x, self.y) or
                 (self.always_visible and map[self.x][self.y].explored)):
-            # libtcod.console_set_default_foreground(con, self.color)
-            # libtcod.console_put_char(con, self.x, self.y, self.char,
-            #                          libtcod.BKGND_NONE)
             console.set_default_foreground(self.color)
             console.write(self.x, self.y, self.char)
 
     def clear(self):
         if libtcod.map_is_in_fov(fov_map, self.x, self.y):
-            # libtcod.console_put_char_ex(con, self.x, self.y, '.',
-            #                             libtcod.white, color_light_ground)
             console.write_ex(self.x, self.y, '.', libtcod.white,
                              color_light_ground)
 
@@ -528,23 +523,13 @@ def place_objects(room):
 def render_bar(x, y, total_width, name, value, maximum, bar_color, back_color):
     bar_width = int(float(value) / maximum * total_width)
 
-    # libtcod.console_set_default_background(panel, back_color)
-    # libtcod.console_rect(panel, x, y, total_width, 1,
-    #                      False, libtcod.BKGND_SCREEN)
     panel.set_default_background(back_color)
     panel.color_rect(x, y, total_width, 1, False, libtcod.BKGND_SCREEN)
 
-    # libtcod.console_set_default_background(panel, bar_color)
     panel.set_default_background(bar_color)
     if bar_width > 0:
-        # libtcod.console_rect(panel, x, y, bar_width, 1,
-        #                      False, libtcod.BKGND_SCREEN)
         panel.color_rect(x, y, bar_width, 1, False, libtcod.BKGND_SCREEN)
 
-    # libtcod.console_set_default_foreground(panel, libtcod.white)
-    # libtcod.console_print_ex(panel, x + total_width / 2, y,
-    #                          libtcod.BKGND_NONE, libtcod.CENTER,
-    #                          name + ': ' + str(value) + '/' + str(maximum))
     panel.set_default_foreground(libtcod.white)
     panel.write(x + total_width / 2, y,
                 name + ': ' + str(value) + '/' + str(maximum),
@@ -577,28 +562,16 @@ def render_all():
                 if not visible:
                     if map[x][y].explored:
                         if wall:
-                            # libtcod.console_put_char_ex(con, x, y, '#',
-                            #                             libtcod.white,
-                            #                             color_dark_wall)
                             console.write_ex(x, y, '#', libtcod.white,
                                              color_dark_wall)
                         else:
-                            # libtcod.console_put_char_ex(con, x, y, '.',
-                            #                             libtcod.white,
-                            #                             color_dark_ground)
                             console.write_ex(x, y, '.', libtcod.white,
                                              color_dark_ground)
                 else:
                     if wall:
-                        # libtcod.console_put_char_ex(con, x, y, '#',
-                        #                             libtcod.white,
-                        #                             color_light_wall)
                         console.write_ex(x, y, '#', libtcod.white,
                                          color_light_wall)
                     else:
-                        # libtcod.console_put_char_ex(con, x, y, '.',
-                        #                             libtcod.white,
-                        #                             color_light_ground)
                         console.write_ex(x, y, '.', libtcod.white,
                                          color_light_ground)
                     map[x][y].explored = True
@@ -608,45 +581,28 @@ def render_all():
             object.draw()
     player.draw()
 
-    # libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
     console.blit()
 
-    # libtcod.console_set_default_background(panel, libtcod.black)
-    # libtcod.console_clear(panel)
     panel.set_default_background(libtcod.black)
     panel.clear
 
     y = 1
     for (line, color) in game_msgs:
-        # libtcod.console_set_default_foreground(panel, color)
-        # libtcod.console_print_ex(panel, MSG_X, y, libtcod.BKGND_NONE,
-        #                          libtcod.LEFT, line)
         panel.set_default_foreground(color)
         panel.write(MSG_X, y, line)
         y += 1
 
     render_bar(1, 1, BAR_WIDTH, 'HP', player.fighter.hp,
                player.fighter.max_hp, libtcod.light_red, libtcod.darker_red)
-    # libtcod.console_print_ex(panel, 1, 3, libtcod.BKGND_NONE, libtcod.LEFT,
-    #                          'Dungeon level ' + str(dungeon_level))
     panel.write(1, 3, 'Dungeon level ' + str(dungeon_level))
 
-    # libtcod.console_set_default_foreground(con, libtcod.white)
-    # libtcod.console_print_ex(0, 1, SCREEN_HEIGHT - 2, libtcod.BKGND_NONE,
-    #                          libtcod.LEFT, 'HP: ' + str(player.fighter.hp) +
-    #                          '/' + str(player.fighter.max_hp))
     console.set_default_foreground(libtcod.white)
     root.write(1, SCREEN_HEIGHT - 2, 'HP: ' + str(player.fighter.hp) +
                '/' + str(player.fighter.max_hp))
 
-    # libtcod.console_set_default_foreground(panel, libtcod.light_gray)
-    # libtcod.console_print_ex(panel, 1, 0, libtcod.BKGND_NONE, libtcod.LEFT,
-    #                          get_name_under_mouse())
     panel.set_default_foreground(libtcod.light_gray)
     panel.write(1, 0, get_name_under_mouse())
 
-    # libtcod.console_blit(panel, 0, 0, SCREEN_WIDTH, PANEL_HEIGHT,
-    #                      0, 0, PANEL_Y)
     panel.blit(w=SCREEN_WIDTH, h=PANEL_HEIGHT, ydst=PANEL_Y)
 
 
@@ -683,20 +639,14 @@ def menu(header, options, width):
     if len(options) > 26:
         raise ValueError('Cannot have a menu with more than 26 options')
 
-    # header_height = libtcod.console_get_height_rect(con, 0, 0, width,
-    #                                                 SCREEN_HEIGHT, header)
     header_height = libtcod.console_get_height_rect(console.body, 0, 0, width,
                                                     SCREEN_HEIGHT, header)
     if header == '':
         header_height = 0
     height = len(options) + header_height
 
-    # window = libtcod.console_new(width, height)
     window = Panel(0, 0, width, height)
 
-    # libtcod.console_set_default_foreground(window, libtcod.white)
-    # libtcod.console_print_rect_ex(window, 0, 0, width, height,
-    #                               libtcod.BKGND_NONE, libtcod.LEFT, header)
     window.set_default_foreground(libtcod.white)
     window.write_wrap_ex(0, 0, width, height, header, libtcod.LEFT)
 
@@ -704,20 +654,16 @@ def menu(header, options, width):
     letter_index = ord('a')
     for option_text in options:
         text = '(' + chr(letter_index) + ') ' + option_text
-        # libtcod.console_print_ex(window, 0, y, libtcod.BKGND_NONE,
-        #                          libtcod.LEFT, text)
         window.write(0, y, text)
         y += 1
         letter_index += 1
 
     x = SCREEN_WIDTH / 2 - width / 2
     y = SCREEN_HEIGHT / 2 - height / 2
-    # libtcod.console_blit(window, 0, 0, width, height, 0, x, y, 1.0, 0.7)
     window.x = x
     window.y = y
     window.blit(bfade=0.7)
 
-    # libtcod.console_flush()
     root.flush
     key = libtcod.console_wait_for_keypress(True)
 
@@ -754,8 +700,8 @@ def msgbox(text, width=50):
 
 def handle_keys():
     global key
-    if key.vk == libtcod.KEY_ENTER and key.lalt:
-        libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
+    # if key.vk == libtcod.KEY_ENTER and key.lalt:
+    #     libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
     # elif key.vk == libtcod.KEY_ESCAPE:
     #     return 'exit'
     # if game_state == 'playing':
@@ -799,7 +745,8 @@ def handle_keys():
     #                 chosen_item.drop()
     #         if key_char == 'c':
     #             level_up_xp = LEVEL_UP_BASE + player.level * LEVEL_UP_FACTOR
-    #             msgbox('Character information\n\nLevel: ' + str(player.level) +
+    #             msgbox('Character information\n\nLevel: ' +
+    #                    str(player.level) +
     #                    '\nExperiance: ' + str(player.fighter.xp) +
     #                    '\nExperiance to level up: ' + str(level_up_xp) +
     #                    '\nMaximum HP: ' + str(player.fighter.max_hp) +
@@ -810,44 +757,44 @@ def handle_keys():
     #             if stairs.x == player.x and stairs.y == player.y:
     #                 next_level()
     #         return 'didnt-take-turn'
-
-    output = binding.check_key(key)
-    if output == 'exit':
-        return output
+    if key == 'exit':
+        return key
     if game_state == 'playing':
-        if output == 'didnt-take-turn':
-            return output
-        elif 'attack' in output:
+        if key == 'didnt-take-turn':
+            return key
+        elif key == 'pass':
+            return key
+        elif 'attack' in key:
             x = 0
             y = 0
-            if 'up' in output:
+            if 'up' in key:
                 y = -1
-            elif 'down' in output:
+            elif 'down' in key:
                 y = 1
-            if 'left' in output:
+            if 'left' in key:
                 x = -1
-            elif 'right' in output:
+            elif 'right' in key:
                 x = 1
             player_move_or_attack(x, y)
-        elif output == 'grab':
+        elif key == 'grab':
             for object in objects:
                 if object.x == player.x and \
                    object.y == player.y and object.item:
                     object.item.pick_up()
                     break
-        elif output == 'inventory':
+        elif key == 'inventory':
             chosen_item = inventory_menu('Press the key next to an ' +
                                          'item to use it, or any ' +
                                          'other to cancel.\n')
             if chosen_item is not None:
                 chosen_item.use()
-        elif output == 'drop':
+        elif key == 'drop':
             chosen_item = inventory_menu('Press the key next to an ' +
                                          'to drop it, or any ' +
                                          'other to cancel.\n')
             if chosen_item is not None:
                 chosen_item.drop()
-        elif output == 'character':
+        elif key == 'character':
             level_up_xp = LEVEL_UP_BASE + player.level * LEVEL_UP_FACTOR
             msgbox('Character information\n\nLevel: ' + str(player.level) +
                    '\nExperiance: ' + str(player.fighter.xp) +
@@ -856,7 +803,7 @@ def handle_keys():
                    '\nAttack: ' + str(player.fighter.power) +
                    '\nDefense: ' + str(player.fighter.defense),
                    CHARACTER_SCREEN_WIDTH)
-        elif output == 'nextlevel':
+        elif key == 'nextlevel':
             if stairs.x == player.x and stairs.y == player.y:
                 next_level()
 
@@ -912,10 +859,10 @@ def monster_death(monster):
 
 
 def target_tile(max_range=None):
-    global key, mouse
+    global mouse
     while True:
-        # libtcod.console_flush()
         root.flush
+        key = libtcod.Key()
         libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS |
                                     libtcod.EVENT_MOUSE, key, mouse)
         render_all()
@@ -1079,6 +1026,7 @@ def next_level():
     message('After a rare moment of peace, you descend deeper into ' +
             'the heart of the dungeon...', libtcod.red)
     make_map()
+    console.set_default_background(libtcod.black)
     initialize_fov()
 
 
@@ -1093,7 +1041,6 @@ def initialize_fov():
                                        not map[x][y].block_sight,
                                        not map[x][y].blocked)
 
-    # libtcod.console_clear(con)
     console.clear
 
 
@@ -1104,14 +1051,13 @@ def play_game():
 
     mouse = libtcod.Mouse()
     key = libtcod.Key()
-    # while not libtcod.console_is_window_closed():
     while not root.is_window_closed:
-        libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS |
-                                    libtcod.EVENT_MOUSE,
-                                    key, mouse)
+        # libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS |
+        #                             libtcod.EVENT_MOUSE,
+        #                             key, mouse)
+        key = binding.check_keypress()
         render_all()
 
-        # libtcod.console_flush()
         root.flush
 
         check_level_up()
@@ -1131,17 +1077,10 @@ def play_game():
 
 
 def main_menu():
-    # while not libtcod.console_is_window_closed():
     while not root.is_window_closed:
         root.clear
         console.set_default_background(libtcod.black)
 
-        # libtcod.console_set_default_foreground(0, libtcod.light_yellow)
-        # libtcod.console_print_ex(0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 4,
-        #                          libtcod.BKGND_NONE, libtcod.CENTER,
-        #                          'Tomb of the Ancient Kings')
-        # libtcod.console_print_ex(0, SCREEN_WIDTH / 2, SCREEN_HEIGHT - 2,
-        #                         libtcod.BKGND_NONE, libtcod.CENTER, 'Author')
         root.set_default_foreground(libtcod.light_yellow)
         root.write(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 4,
                    'Toom of the Ancient Kings', align=libtcod.CENTER)
@@ -1164,14 +1103,6 @@ def main_menu():
         elif choice == 2:
             break
 
-# libtcod.console_set_custom_font('terminal12x12_gs_ro.png',
-#                                 libtcod.FONT_TYPE_GREYSCALE |
-#                                 libtcod.FONT_LAYOUT_ASCII_INROW)
-# libtcod.console_init_root(SCREEN_WIDTH, SCREEN_HEIGHT,
-#                           'basicroguelike', False)
-# libtcod.sys_set_fps(LIMIT_FPS)
-# con = libtcod.console_new(SCREEN_WIDTH, SCREEN_HEIGHT)
-# panel = libtcod.console_new(SCREEN_WIDTH, PANEL_HEIGHT)
 root = Console(SCREEN_WIDTH, SCREEN_HEIGHT, 'basicroguelike')
 console = Panel(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
 panel = Panel(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)

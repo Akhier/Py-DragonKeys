@@ -1,4 +1,4 @@
-# by Akhier Dragonheart
+# By Akhier Dragonheart
 import libtcodpy
 
 
