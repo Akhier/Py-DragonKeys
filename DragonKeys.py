@@ -1,11 +1,14 @@
 # By Akhier Dragonheart
-from DKlibtcod import wait_keypress, check_keypress, _interpret_key
 import os.path
 import csv
 
 
 class KeyHandler:
     def __init__(self):
+        from libtcodbackend import wait_keypress, check_keypress, _interpret_key
+        self.wait_keypress = wait_keypress
+        self.check_keypress = check_keypress
+        self._interpret_key = _interpret_key
         self._bindingname = ''
         self._bindingpath = ''
         self._bindingdict = {}
@@ -71,27 +74,27 @@ class KeyHandler:
             return self._bindingdict['DEFAULT']
 
     def check_key(self, key):
-        key = _interpret_key(key)
+        key = self._interpret_key(key)
         return self._checking(key)
 
     def check_keypress(self):
-        key = check_keypress()
+        key = self.check_keypress()
         return self._checking(key)
 
     def wait_keypress(self):
-        key = wait_keypress()
+        key = self.wait_keypress()
         return self._checking(key)
 
     def add_specified_binding(self, key, output):
         self._bindingdict[key] = output
 
     def add_binding(self, output):
-        key = wait_keypress()
+        key = self.wait_keypress()
         self.add_specified_binding(key, output)
 
     def remove_specified_binding(self, key):
         self._bindingdict.pop(key, None)
 
     def remove_binding(self):
-        key = wait_keypress()
+        key = self.wait_keypress()
         self.remove_specified_binding(key)

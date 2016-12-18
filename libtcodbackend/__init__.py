@@ -1,0 +1,1 @@
+from DKlibtcod import wait_keypress, check_keypress, _interpret_key
